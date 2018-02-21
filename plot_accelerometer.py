@@ -1,13 +1,15 @@
 import time
+from scipy import fftpack
 import matplotlib.pyplot as plt
 
+directory = "Data" 
 sensor = "accelerometer"
 activity = "driving"
 position = "carsidepocket"
 phone_owner = "SAURABH"
 file_format = ".txt"
 
-INPUT_FILE_PATH = sensor + "_" + activity + "_" + position + "_" + phone_owner + file_format
+INPUT_FILE_PATH = directory + "/" + sensor + "_" + activity + "_" + position + "_" + phone_owner + file_format
 
 SKIP_LINE1 = "accelerometer.txt"
 SKIP_LINE2 = "All values are in SI units (m/s^2)."
@@ -15,6 +17,21 @@ SKIP_LINE3 = "http://developer.android.com/guide/topics/sensors/sensors_overview
 SKIP_LINE4 = "elapsed-time-system elapsed-time-sensor x y z"
 
 SKIP_LINE_ARRAY = [SKIP_LINE1,SKIP_LINE2,SKIP_LINE3,SKIP_LINE4]
+# def fft(self,x,t):
+# 		f = 50
+# 		f_s = 50
+# 		fig, ax = plt.subplots()
+# 		ax.plot(t, x)
+# 		ax.set_xlabel('Time [s]')
+# 		ax.set_ylabel('Signal amplitude');
+# 		X = fftpack.fft(x)
+# 		freqs = fftpack.fftfreq(len(x)) * f_s
+# 		fig, ax = plt.subplots()
+# 		ax.stem(freqs, np.abs(X))
+# 		ax.set_xlabel('Frequency in Hertz [Hz]')
+# 		ax.set_ylabel('Frequency Domain (Spectrum) Magnitude')
+# 		ax.set_xlim(-f_s / 2, f_s / 2)
+# 		ax.set_ylim(-5, 110)
 
 class Chart(object):
 
@@ -26,24 +43,16 @@ class Chart(object):
         plt.ylim([-20, 20])
         plt.xlim([0, 300])
 
-    def plot(self, x, y, z):
-        self.senses += 1
-        plt.plot([self.sb, self.senses], [self.xbuf, x], color='r', label='X')
-        plt.plot([self.sb, self.senses], [self.ybuf, y], color='g', label='Y')
-        plt.plot([self.sb, self.senses], [self.zbuf, z], color='b', label='Z')
+    def plot(self, x, y, z,t):
+        # self.senses += 1
+        plt.plot(x,t, color='r', label='X')
+        plt.plot(y,t, color='r', label='Y')
+        plt.plot(z,t, color='r', label='Z')
+        # plt.plot([self.sb, self.senses], [self.xbuf, x], color='r', label='X')
+        # plt.plot([self.sb, self.senses], [self.ybuf, y], color='g', label='Y')
+        # plt.plot([self.sb, self.senses], [self.zbuf, z], color='b', label='Z')
         self.fig.canvas.draw()
-        self.sb, self.xbuf, self.ybuf, self.zbuf = self.senses, x, y, z
-
-# Interval between sensing
-#dt = 100
-
-# Number of senses
-#TotalToSense = 250
-
-# Connect to android and start sensing
-#android_address = ("192.168.0.1", 9999)
-#droid = android.Android(android_address)
-#droid.startSensingTimed(2, dt)
+        # self.sb, self.xbuf, self.ybuf, self.zbuf = self.senses, x, y, z
 
 if __name__ == "__main__":
     chart = Chart()
@@ -58,7 +67,8 @@ if __name__ == "__main__":
                 
                 # skip lines that you're not interested in
                 if line in SKIP_LINE_ARRAY:
-                    print "SKIPPING"
+                    # print "SKIPPING"
+                    pass
                 
                 else:
                     line_list = line.split(" ")
@@ -66,5 +76,7 @@ if __name__ == "__main__":
                     x = float(line_list[2])
                     y = float(line_list[3])
                     z = float(line_list[4])
+                    t = float(line_list[1])
 
-                    chart.plot(x, y, z)
+                    chart.plot(x, y, z,t)
+                    # chart.fft(x,t)
