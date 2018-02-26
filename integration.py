@@ -9,7 +9,7 @@ position = "carsidepocket"    # example values include "stacked", "sidebyside", 
 phone_owner = "SAURABH"  # example values include "NITISH", "SAURABH"
 file_format = ".txt"
 
-INPUT_FILE_PATH = sensor + "_" + activity + "_" + position + "_" + phone_owner + file_format
+INPUT_FILE_PATH = "Data/" + sensor + "_" + activity + "_" + position + "_" + phone_owner + file_format
 
 SKIP_LINE1 = "accelerometer.txt"
 SKIP_LINE2 = "All values are in SI units (m/s^2)."
