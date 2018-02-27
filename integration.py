@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 
 BATCH_TIME_PERIOD_IN_SECONDS = 60.0
 
@@ -25,11 +25,11 @@ def parse_file():
 
 		for line in input_file:
 			line = line.strip()
-			print line
+			#print (line)
 			if line:
 
 				if line in SKIP_LINE_ARRAY:
-					print "SKIPPING"
+					print ("SKIPPING")
 				
 				else:
 					line_list = line.split(" ")
@@ -64,17 +64,16 @@ if __name__ == '__main__':
 
 		z_list = []
 		t_list = []
-
-		while time < multiplier*BATCH_TIME_PERIOD_IN_SECONDS:
+		print ("Multiplier is: " + str(multiplier))
+		while (time < multiplier*BATCH_TIME_PERIOD_IN_SECONDS):
 
 			z_list.append(z)
 			t_list.append(time)
 
-			print "Multiplier is: " + str(multiplier)
-			integral_value = np.trapz(z,time,axis=-1)
+		integral_value = np.trapz(z_list,time_list, axis = -1)
 
-			print "Integral value is: " + str(integral_value)
-			d = raw_input("Press any key")
+		print ("Integral value is: " + (integral_value))
+		d = raw_input("Press any key")
 
 
 
