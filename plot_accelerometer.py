@@ -45,12 +45,12 @@ class Chart(object):
 
     def plot(self, x, y, z,t):
         # self.senses += 1
-        plt.plot(x,t, color='r', label='X')
-        plt.plot(y,t, color='r', label='Y')
-        plt.plot(z,t, color='r', label='Z')
-        # plt.plot([self.sb, self.senses], [self.xbuf, x], color='r', label='X')
-        # plt.plot([self.sb, self.senses], [self.ybuf, y], color='g', label='Y')
-        # plt.plot([self.sb, self.senses], [self.zbuf, z], color='b', label='Z')
+        # plt.plot(x,t, color='r', label='X')
+        # plt.plot(y,t, color='r', label='Y')
+        # plt.plot(z,t, color='r', label='Z')
+        plt.plot([self.sb, self.senses], [self.xbuf, x], color='r', label='X')
+        plt.plot([self.sb, self.senses], [self.ybuf, y], color='g', label='Y')
+        plt.plot([self.sb, self.senses], [self.zbuf, z], color='b', label='Z')
         self.fig.canvas.draw()
         # self.sb, self.xbuf, self.ybuf, self.zbuf = self.senses, x, y, z
 
