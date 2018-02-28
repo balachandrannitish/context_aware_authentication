@@ -12,8 +12,26 @@ position = "carsidepocket"    # example values include "stacked", "sidebyside", 
 phone_owner = "SAURABH"  # example values include "NITISH", "SAURABH"
 file_format = ".txt"
 
-INPUT_FILE_SAURABH = sensor + "_" + activity + "_" + position + "_" + "SAURABH" + file_format
-INPUT_FILE_NITISH = sensor + "_" + activity + "_" + position + "_" + "NITISH"  + file_format
+INPUT_FILE_SAURABH = "Data/" + sensor + "_" + activity + "_" + position + "_" + "SAURABH" + file_format
+INPUT_FILE_NITISH = "Data/" + sensor + "_" + activity + "_" + position + "_" + "NITISH"  + file_format
+
+def compare_fingerprints(fp1, fp2):
+	'''
+	Takes two 128-bit fingerprints and compares their hamming distance.
+
+	Returns percentage_similarity = (1 - hamming distance/128) * 100
+	'''
+	assert len(fp1) == len(fp2)
+	count,z = 0,int(fp1,2)^int(fp2,2)
+	while z:
+		count += 1
+		z &= z-1 # magic!
+	
+	percentage_similarity = (1 - float(count)/float(len(fp1))) * 100   # 'count' is the hamming distance value
+
+	return percentage_similarity
+
+
 
 def parse_file_and_compute_integrals(file_path):
 	"""
@@ -57,6 +75,7 @@ def parse_file_and_compute_integrals(file_path):
 		integral_list.append(integral_value)
 
 		return integral_list
+
 
 if __name__ == '__main__':
 
