@@ -5,7 +5,7 @@ BATCH_TIME_PERIOD_IN_SECONDS = 1.0
 SKIP_LINE_LIST = ["accelerometer.txt","All values are in SI units (m/s^2).","http://developer.android.com/guide/topics/sensors/sensors_overview.html","elapsed-time-system elapsed-time-sensor x y z"]
 FROM_SECOND = 10.0
 TO_SECOND = 200.0
-VERBOSE = True
+VERBOSE = False
 INPUT_FILE_SAURABH = "Data/accelerometer_driving_carsidepocket_SAURABH.txt"
 INPUT_FILE_NITISH = "Data/accelerometer_driving_carsidepocket_NITISH.txt"
 INPUT_FILE_MALICIOUS = "Data/accelerometer_driving_inbus_NITISH.txt"
@@ -65,10 +65,10 @@ def threshold_estimation(integral_list_1, integral_list_2):
 		fp_simlist.append(fp_similarity)
 
 		if VERBOSE:
-			print "\nThreshold is: " + str(float(threshold))
-			print "Fingerprint 1 is: " + fp1
-			print "Fingerprint 2 is: " + fp2
-			print "SIMILARITY: " + str(fp_similarity) + "%"
+			print("\nThreshold is: " + str(float(threshold)))
+			print("Fingerprint 1 is: " + fp1)
+			print("Fingerprint 2 is: " + fp2)
+			print("SIMILARITY: " + str(fp_similarity) + "%")
 			d = raw_input("Press any key")
 
 	return threshold_list, fp_simlist
@@ -131,10 +131,10 @@ if __name__ == '__main__':
 	normalized_malicious_list = integral_list_malicious[:128]
 
 	if VERBOSE:
-		#print np.median(normalized_saurabh_list)
-		print normalized_saurabh_list
-		print normalized_nitish_list
-		print normalized_malicious_list
+		#print(np.median(normalized_saurabh_list))
+		print(normalized_saurabh_list)
+		print(normalized_nitish_list)
+		print(normalized_malicious_list)
 		d = raw_input("\nPress any key\n")
 	
 	threshold_list, fp_simlist_legit = threshold_estimation(normalized_nitish_list,normalized_saurabh_list)
