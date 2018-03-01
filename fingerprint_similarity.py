@@ -16,11 +16,12 @@ def graph_plot(threshold_list, fp_simlist1):
 	'''
 	plt.bar(threshold_list,fp_simlist1)
 	plt.xlabel('Threshold Values')
-	plt.ylabel('Fingeprint Similarity')
-	plt.title('Fingreprint Similarity vs. Threshold')
+	plt.ylabel('Fingerprint Similarity')
+	plt.title('Fingerprint Similarity vs. Threshold')
 	#plt.axis([(min(threshold_list), max(threshold_list), min(fp_simlist1), max(fp_simlist1)])
 	#plt.axis()
 	plt.show()
+	# plt.figure(2)
 
 def compare_fingerprints(fp1, fp2):
 	'''
@@ -69,7 +70,7 @@ def threshold_estimation(integral_list_1, integral_list_2):
 			print("Fingerprint 1 is: " + fp1)
 			print("Fingerprint 2 is: " + fp2)
 			print("SIMILARITY: " + str(fp_similarity) + "%")
-			d = raw_input("Press any key")
+			#d = raw_input("Press any key")
 
 	return threshold_list, fp_simlist
 
@@ -145,7 +146,9 @@ if __name__ == '__main__':
 
 	# COMMENT OR UNCOMMENT ONE OF THE LINES BELOW TO SWITCH BETWEEN THE LEGIT AND MALIICIOUS SCENARIOS
 	graph_plot(threshold_list,fp_simlist_legit)
-	#graph_plot(threshold_list,fp_simlist_mal)
+	# plt.figure(1)
+	graph_plot(threshold_list,fp_simlist_mal)
+
 
 
 
