@@ -1,14 +1,24 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import statistics
 
 BATCH_TIME_PERIOD_IN_SECONDS = 1.0
+# SKIP_LINE_LIST = ["linear-acceleration.txt","All values are in SI units (m/s^2).","http://developer.android.com/guide/topics/sensors/sensors_overview.html","elapsed-time-system elapsed-time-sensor x y z"]
 SKIP_LINE_LIST = ["accelerometer.txt","All values are in SI units (m/s^2).","http://developer.android.com/guide/topics/sensors/sensors_overview.html","elapsed-time-system elapsed-time-sensor x y z"]
 FROM_SECOND = 10.0
 TO_SECOND = 200.0
-VERBOSE = False
-INPUT_FILE_SAURABH = "Data/accelerometer_driving_carsidepocket_SAURABH.txt"
-INPUT_FILE_NITISH = "Data/accelerometer_driving_carsidepocket_NITISH.txt"
+VERBOSE = True
+# INPUT_FILE_SAURABH = "Data/linear-acceleration_81_Trial2_SAURABH.txt"
+# INPUT_FILE_NITISH = "Data/linear-acceleration_Trial2_81_NITISH.txt"
+# INPUT_FILE_MALICIOUS = "Data/linear-acceleration_81c_Trial1_SAURABH.txt"
+INPUT_FILE_SAURABH = "Data/accelerometer_81_Trial2_SAURABH.txt"
+INPUT_FILE_NITISH = "Data/accelerometer_Trial2_81_NITISH.txt"
 INPUT_FILE_MALICIOUS = "Data/accelerometer_driving_inbus_NITISH.txt"
+
+def median(list1):
+	med = 0
+	med = statistics.median(list1)
+	return med
 
 def graph_plot(threshold_list, fp_simlist1):
 	'''
@@ -37,14 +47,14 @@ def compare_fingerprints(fp1, fp2):
 
 	return percentage_similarity
 
-def threshold_estimation(integral_list_1, integral_list_2):
+def threshold_estimation(integral_list_1, integral_list_2, median):
 	max_element = max(max(integral_list_1),max(integral_list_2))
 
 	threshold_list = []
 	fp_simlist = []
 
 	#for threshold in range(50,int(max_element)):
-	for threshold in range(50,60):
+	for threshold in range((median-10),(median+10)):
 		fp1 = ''
 		fp2 = ''
 
@@ -123,6 +133,7 @@ def parse_file_and_compute_integrals(file_path):
 
 if __name__ == '__main__':
 
+	med = 0 
 	integral_list_saurabh = parse_file_and_compute_integrals(INPUT_FILE_SAURABH)
 	integral_list_nitish = parse_file_and_compute_integrals(INPUT_FILE_NITISH)
 	integral_list_malicious = parse_file_and_compute_integrals(INPUT_FILE_MALICIOUS)
@@ -130,16 +141,17 @@ if __name__ == '__main__':
 	normalized_saurabh_list = integral_list_saurabh[:128]
 	normalized_nitish_list = integral_list_nitish[:128]
 	normalized_malicious_list = integral_list_malicious[:128]
-
+	med  = median(normalized_saurabh_list)
 	if VERBOSE:
 		#print(np.median(normalized_saurabh_list))
 		print(normalized_saurabh_list)
 		print(normalized_nitish_list)
 		print(normalized_malicious_list)
-		d = raw_input("\nPress any key\n")
+		print ("Median****************************************************", median(normalized_saurabh_list))
+		#d = raw_input("\nPress any key\n")
 	
-	threshold_list, fp_simlist_legit = threshold_estimation(normalized_nitish_list,normalized_saurabh_list)
-	threshold_list, fp_simlist_mal = threshold_estimation(normalized_malicious_list,normalized_saurabh_list)
+	threshold_list, fp_simlist_legit = threshold_estimation(normalized_nitish_list,normalized_saurabh_list,int(med))
+	threshold_list, fp_simlist_mal = threshold_estimation(normalized_malicious_list,normalized_saurabh_list, int(med))
 
 	#threshold_list, fp_simlist_legit = threshold_estimation(integral_list_nitish,integral_list_saurabh)
 	#threshold_list, fp_simlist_mal = threshold_estimation(integral_list_malicious,integral_list_saurabh)

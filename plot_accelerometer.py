@@ -9,7 +9,8 @@ position = "carsidepocket"
 phone_owner = "SAURABH"
 file_format = ".txt"
 
-INPUT_FILE_PATH = directory + "/" + sensor + "_" + activity + "_" + position + "_" + phone_owner + file_format
+#INPUT_FILE_PATH = directory + "/" + sensor + "_" + activity + "_" + position + "_" + phone_owner + file_format
+INPUT_FILE_PATH = "Data/accelerometer_81c_Trial1_NITISH.txt"
 
 SKIP_LINE1 = "accelerometer.txt"
 SKIP_LINE2 = "All values are in SI units (m/s^2)."
