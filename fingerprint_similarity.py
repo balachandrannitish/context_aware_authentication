@@ -3,14 +3,11 @@ import matplotlib.pyplot as plt
 import statistics
 
 BATCH_TIME_PERIOD_IN_SECONDS = 1.0
-# SKIP_LINE_LIST = ["linear-acceleration.txt","All values are in SI units (m/s^2).","http://developer.android.com/guide/topics/sensors/sensors_overview.html","elapsed-time-system elapsed-time-sensor x y z"]
 SKIP_LINE_LIST = ["accelerometer.txt","All values are in SI units (m/s^2).","http://developer.android.com/guide/topics/sensors/sensors_overview.html","elapsed-time-system elapsed-time-sensor x y z"]
 FROM_SECOND = 10.0
 TO_SECOND = 200.0
 VERBOSE = True
-# INPUT_FILE_SAURABH = "Data/linear-acceleration_81_Trial2_SAURABH.txt"
-# INPUT_FILE_NITISH = "Data/linear-acceleration_Trial2_81_NITISH.txt"
-# INPUT_FILE_MALICIOUS = "Data/linear-acceleration_81c_Trial1_SAURABH.txt"
+
 INPUT_FILE_SAURABH = "Data/accelerometer_81_Trial2_SAURABH.txt"
 INPUT_FILE_NITISH = "Data/accelerometer_Trial2_81_NITISH.txt"
 INPUT_FILE_MALICIOUS = "Data/accelerometer_driving_inbus_NITISH.txt"
@@ -26,7 +23,7 @@ def graph_plot(threshold_list, fp_simlist1):
 	'''
 	plt.bar(threshold_list,fp_simlist1)
 	plt.xlabel('Threshold Values')
-	plt.ylabel('Fingerprint Similarity')
+	plt.ylabel('Fingerprint Similarity (%)')
 	plt.title('Fingerprint Similarity vs. Threshold')
 	#plt.axis([(min(threshold_list), max(threshold_list), min(fp_simlist1), max(fp_simlist1)])
 	#plt.axis()
@@ -92,6 +89,8 @@ def parse_file_and_compute_integrals(file_path):
 
 		# intialize batch counter and "current" lists
 		batch_counter = 1
+		x_current = []
+		y_current = []
 		z_current = []  # z_current is the set of z^2 values that constitute a single batch
 		t_current = []  # t_current is the set of t values that constitute a single batch
 		integral_list = []
@@ -112,21 +111,33 @@ def parse_file_and_compute_integrals(file_path):
 
 					if t>FROM_SECOND:
 						total_samples = total_samples + 1
+						x_current.append(x*x)
+						y_current.append(y*y)
 						z_current.append(z*z)
 						t_current.append(t)
 
 					if t>(FROM_SECOND + batch_counter*BATCH_TIME_PERIOD_IN_SECONDS):
-						integral_value = np.trapz(z_current,t_current,axis=-1)
-						integral_list.append(integral_value)
+						x_power = np.trapz(x_current,t_current,axis=-1)
+						y_power = np.trapz(y_current,t_current,axis=-1)
+						z_power = np.trapz(z_current,t_current,axis=-1)
+						total_power = x_power + y_power + z_power
+
+						integral_list.append(total_power)
 						batch_counter = batch_counter + 1
+						x_current = []
+						y_current = []
 						z_current = []
 						t_current = []
 
 					if t>TO_SECOND:
 						break
 
-		integral_value = np.trapz(z_current,t_current,axis=-1)
-		integral_list.append(integral_value)
+		x_power = np.trapz(x_current,t_current,axis=-1)
+		y_power = np.trapz(y_current,t_current,axis=-1)
+		z_power = np.trapz(z_current,t_current,axis=-1)
+		total_power = x_power + y_power + z_power
+		
+		integral_list.append(total_power)
 
 		return integral_list
 
